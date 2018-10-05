@@ -16,11 +16,12 @@
 	
 	<h2>Daftar Flight</h2>
 	<ol th:each="flight : ${flightList}">
+		<h3 th:text="'Flight Number ' + ': ' + ${flight.flightNumber}"></h3>
 		<h3 th:text="'Origin ' + ': ' + ${flight.origin}"></h3>
 		<h3 th:text="'Destination ' + ': ' + ${flight.destination}"></h3>
 		<h3 th:text="'Time ' + ': ' + ${flight.time}"></h3>
 		
-		<td><a th:href="@{'/flight/update/' + ${flight.flightNumber}}">Update Flight</a></td>
+		<td><a th:href="@{'/flight/update/' + ${flight.id}}">Update Flight</a></td>
 	</ol>
 </body>
 

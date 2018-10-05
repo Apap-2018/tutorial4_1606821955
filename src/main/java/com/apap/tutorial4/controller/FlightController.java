@@ -5,6 +5,7 @@ import com.apap.tutorial4.model.PilotModel;
 import com.apap.tutorial4.service.FlightService;
 import com.apap.tutorial4.service.PilotService;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,16 +43,24 @@ public class FlightController {
 		return "add";
 	}
 	
-	@RequestMapping(value = "/flight/update/{flightNumber}", method = RequestMethod.GET)
-	private String updateFlight(@PathVariable("flightNumber") String flightNumber, Model model) {
-		FlightModel flight = flightService.getFlightDetailByFlightNumber(flightNumber);
+	@RequestMapping(value = "/flight/update/{id}", method = RequestMethod.GET)
+	private String updateFlight(@PathVariable("id") String id, Model model) {
+		FlightModel flight = flightService.getFlightDetailById(id);
 		model.addAttribute("flight", flight);
 		return "update-flight";
 	}
 	
 	@RequestMapping(value = "/flight/update", method = RequestMethod.POST)
 	private String updateFlightSubmit(@ModelAttribute FlightModel flight) {
-		flightService.updateFlight(flight, flight.getFlightNumber());
+		flightService.updateFlight(flight, Long.toString(flight.getId()));
 		return "update";
+	}
+	
+	@RequestMapping(value = "/flight/view")
+	public String viewFlightNumber(@RequestParam("flightNumber") String flightNumber, Model model) {
+		List<FlightModel> flight = flightService.getFlightByFlightNumber(flightNumber);
+		
+		model.addAttribute("flight", flight);
+		return "view-flight";
 	}
 }

@@ -3,6 +3,8 @@ package com.apap.tutorial4.service;
 import com.apap.tutorial4.model.FlightModel;
 import com.apap.tutorial4.repository.FlightDB;
 
+import java.util.List;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +19,23 @@ public class FlightServiceImpl implements FlightService {
 	private FlightDB flightDb;
 	
 	@Override
-	public FlightModel getFlightDetailByFlightNumber(String flightNumber) {
-		return flightDb.findByFlightNumber(flightNumber);
+	public FlightModel getFlightDetailById(String id) {
+		long idLong = Long.parseLong(id);
+		return flightDb.findById(idLong);
+	}
+	
+	@Override
+	public List<FlightModel> getFlightByFlightNumber(String flightNumber) {
+		List<FlightModel> allFlight = flightDb.findAll();
+		List<FlightModel> selectedFlight = new ArrayList<>();
+		
+		for (FlightModel flight : allFlight) {
+			if (flight.getFlightNumber().equalsIgnoreCase(flightNumber)) {
+				selectedFlight.add(flight);
+			}
+		}
+		
+		return selectedFlight;
 	}
 	
 	@Override
@@ -27,9 +44,11 @@ public class FlightServiceImpl implements FlightService {
 	}
 	
 	@Override
-	public void updateFlight(FlightModel newFlight, String flightNumber) {
-		FlightModel flight = flightDb.findByFlightNumber(flightNumber);
+	public void updateFlight(FlightModel newFlight, String id) {
+		long idLong = Long.parseLong(id);
+		FlightModel flight = flightDb.findById(idLong);
 		
+		flight.setFlightNumber(newFlight.getFlightNumber());
 		flight.setOrigin(newFlight.getOrigin());
 		flight.setDestination(newFlight.getDestination());
 		flight.setTime(newFlight.getTime());
