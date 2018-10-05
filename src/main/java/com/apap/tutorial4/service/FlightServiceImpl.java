@@ -17,7 +17,22 @@ public class FlightServiceImpl implements FlightService {
 	private FlightDB flightDb;
 	
 	@Override
+	public FlightModel getFlightDetailByFlightNumber(String flightNumber) {
+		return flightDb.findByFlightNumber(flightNumber);
+	}
+	
+	@Override
 	public void addFlight(FlightModel flight) {
+		flightDb.save(flight);
+	}
+	
+	@Override
+	public void updateFlight(FlightModel newFlight, String flightNumber) {
+		FlightModel flight = flightDb.findByFlightNumber(flightNumber);
+		
+		flight.setOrigin(newFlight.getOrigin());
+		flight.setDestination(newFlight.getDestination());
+		flight.setTime(newFlight.getTime());
 		flightDb.save(flight);
 	}
 }
