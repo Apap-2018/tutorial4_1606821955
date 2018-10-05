@@ -50,6 +50,14 @@ public class FlightController {
 		return "update-flight";
 	}
 	
+	@RequestMapping(value = "/flight/delete/{id}")
+	public String deleteFlight(@PathVariable("id") String id) {
+		FlightModel flight = flightService.getFlightDetailById(id);
+		
+		flightService.deleteFlight(flight);
+		return "delete";
+	}
+	
 	@RequestMapping(value = "/flight/update", method = RequestMethod.POST)
 	private String updateFlightSubmit(@ModelAttribute FlightModel flight) {
 		flightService.updateFlight(flight, Long.toString(flight.getId()));
